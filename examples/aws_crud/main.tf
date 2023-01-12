@@ -71,4 +71,16 @@ resource "rediscloud_active_active_subscription_regions" "demo" {
       local_read_operations_per_second  = 1000
     }
   }
+
+  region {
+    region                     = "eu-west-2"
+    networking_deployment_cidr = "10.0.3.0/24"
+
+    database {
+      id                                = rediscloud_active_active_subscription_database.demo.db_id
+      database_name                     = rediscloud_active_active_subscription_database.demo.name
+      local_write_operations_per_second = 1000
+      local_read_operations_per_second  = 1000
+    }
+  }
 }
