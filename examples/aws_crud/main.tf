@@ -84,3 +84,14 @@ resource "rediscloud_active_active_subscription_regions" "demo" {
     }
   }
 }
+
+resource "rediscloud_active_active_subscription_peering" "demo" {
+  subscription_id    = rediscloud_active_active_subscription.demo.id
+  source_region      = "eu-west-2"
+  destination_region = "eu-west-2"
+  aws_account_id     = "330647878806"
+  vpc_id             = "vpc-0f9096cd36601b06d"
+  vpc_cidrs = [
+    "192.168.1.0/24"
+  ]
+}
