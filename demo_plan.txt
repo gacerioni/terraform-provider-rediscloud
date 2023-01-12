@@ -1,0 +1,14 @@
+Demo scenarios:
+
+Ben:
+1. create an active active subscription in AWS with 1 DB in two regions
+2. add a new region to the DB
+3. add an AWS peering
+4. delete everything
+
+Byron:
+5. create an active active subscription in their GCP with two regions
+6. add a GCP peering
+7. delete everything
+
+8. create subscription in UI and import
