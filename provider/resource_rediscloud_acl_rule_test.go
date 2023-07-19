@@ -21,9 +21,9 @@ func TestAccResourceRedisCloudAclRule_CRUDI(t *testing.T) {
 	testUpdateTerraform := fmt.Sprintf(testRedisRule, testName+"_updated_name", testRule+" -@dangerous ~*")
 
 	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t) },
-		ProviderFactories: providerFactories,
-		CheckDestroy:      testAccCheckAclRuleDestroy,
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV5ProviderFactories: providerFactories,
+		CheckDestroy:             testAccCheckAclRuleDestroy,
 		Steps: []resource.TestStep{
 			// Test rule creation
 			{
@@ -42,7 +42,7 @@ func TestAccResourceRedisCloudAclRule_CRUDI(t *testing.T) {
 							return fmt.Errorf("couldn't parse the rule ID: %s", redis.StringValue(&r.Primary.ID))
 						}
 
-						client := testProvider.Meta().(*apiClient)
+						client := sdkProvider.Meta().(*apiClient)
 						rule, err := client.client.RedisRules.Get(context.TODO(), id)
 						if err != nil {
 							return err
@@ -86,7 +86,7 @@ resource "rediscloud_acl_rule" "test" {
 `
 
 func testAccCheckAclRuleDestroy(s *terraform.State) error {
-	client := testProvider.Meta().(*apiClient)
+	client := sdkProvider.Meta().(*apiClient)
 
 	for _, r := range s.RootModule().Resources {
 		if r.Type != "rediscloud_acl_rule" {

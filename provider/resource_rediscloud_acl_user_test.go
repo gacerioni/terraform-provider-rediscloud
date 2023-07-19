@@ -33,9 +33,9 @@ func TestAccResourceRedisCloudAclUser_CRUDI(t *testing.T) {
 		fmt.Sprintf(testUser, testName, testPassword)
 
 	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t); testAccAwsPreExistingCloudAccountPreCheck(t) },
-		ProviderFactories: providerFactories,
-		CheckDestroy:      testAccCheckAclUserDestroy,
+		PreCheck:                 func() { testAccPreCheck(t); testAccAwsPreExistingCloudAccountPreCheck(t) },
+		ProtoV5ProviderFactories: providerFactories,
+		CheckDestroy:             testAccCheckAclUserDestroy,
 		Steps: []resource.TestStep{
 			// Test user creation
 			{
@@ -53,7 +53,7 @@ func TestAccResourceRedisCloudAclUser_CRUDI(t *testing.T) {
 							return fmt.Errorf("couldn't parse the role ID: %s", redis.StringValue(&r.Primary.ID))
 						}
 
-						client := testProvider.Meta().(*apiClient)
+						client := sdkProvider.Meta().(*apiClient)
 						user, err := client.client.Users.Get(context.TODO(), id)
 						if err != nil {
 							return err
@@ -112,9 +112,9 @@ func TestAccResourceRedisCloudAclUser_NewName(t *testing.T) {
 	identifier := ""
 
 	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t); testAccAwsPreExistingCloudAccountPreCheck(t) },
-		ProviderFactories: providerFactories,
-		CheckDestroy:      testAccCheckAclUserDestroy,
+		PreCheck:                 func() { testAccPreCheck(t); testAccAwsPreExistingCloudAccountPreCheck(t) },
+		ProtoV5ProviderFactories: providerFactories,
+		CheckDestroy:             testAccCheckAclUserDestroy,
 		Steps: []resource.TestStep{
 			// Test user creation
 			{
@@ -166,9 +166,9 @@ func TestAccResourceRedisCloudAclUser_NewPassword(t *testing.T) {
 	identifier := ""
 
 	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t); testAccAwsPreExistingCloudAccountPreCheck(t) },
-		ProviderFactories: providerFactories,
-		CheckDestroy:      testAccCheckAclUserDestroy,
+		PreCheck:                 func() { testAccPreCheck(t); testAccAwsPreExistingCloudAccountPreCheck(t) },
+		ProtoV5ProviderFactories: providerFactories,
+		CheckDestroy:             testAccCheckAclUserDestroy,
 		Steps: []resource.TestStep{
 			// Test user creation
 			{
@@ -220,7 +220,7 @@ resource "rediscloud_acl_user" "test" {
 `
 
 func testAccCheckAclUserDestroy(s *terraform.State) error {
-	client := testProvider.Meta().(*apiClient)
+	client := sdkProvider.Meta().(*apiClient)
 
 	for _, r := range s.RootModule().Resources {
 		if r.Type != "rediscloud_acl_user" {

@@ -15,9 +15,9 @@ func TestAccDataSourceRedisCloudAclRule_Default(t *testing.T) {
 	getRuleTerraform := fmt.Sprintf(getDefaultAclRuleDataSource, testName)
 
 	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t) },
-		ProviderFactories: providerFactories,
-		CheckDestroy:      nil, // test doesn't create a resource, so don't need to check anything
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV5ProviderFactories: providerFactories,
+		CheckDestroy:             nil, // test doesn't create a resource, so don't need to check anything
 		Steps: []resource.TestStep{
 			{
 				Config: getRuleTerraform,
@@ -38,9 +38,9 @@ func TestAccDataSourceRedisCloudAclRule_Custom(t *testing.T) {
 	createAndGetRuleTerraform := fmt.Sprintf(createAndGetCustomAclRuleTerraform, testName, testRule)
 
 	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t) },
-		ProviderFactories: providerFactories,
-		CheckDestroy:      testAccCheckAclRuleDestroy,
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV5ProviderFactories: providerFactories,
+		CheckDestroy:             testAccCheckAclRuleDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: createAndGetRuleTerraform,

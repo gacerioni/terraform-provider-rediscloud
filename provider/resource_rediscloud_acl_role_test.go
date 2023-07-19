@@ -32,9 +32,9 @@ func TestAccCreateReadUpdateImportDeleteAclRole_Flexible(t *testing.T) {
 		fmt.Sprintf(testRole, testRoleName+"-updated")
 
 	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t); testAccAwsPreExistingCloudAccountPreCheck(t) },
-		ProviderFactories: providerFactories,
-		CheckDestroy:      testAccCheckAclRoleDestroy,
+		PreCheck:                 func() { testAccPreCheck(t); testAccAwsPreExistingCloudAccountPreCheck(t) },
+		ProtoV5ProviderFactories: providerFactories,
+		CheckDestroy:             testAccCheckAclRoleDestroy,
 		Steps: []resource.TestStep{
 			// Test role creation including association with database
 			{
@@ -57,7 +57,7 @@ func TestAccCreateReadUpdateImportDeleteAclRole_Flexible(t *testing.T) {
 							return fmt.Errorf("couldn't parse the role ID: %s", redis.StringValue(&r.Primary.ID))
 						}
 
-						client := testProvider.Meta().(*apiClient)
+						client := sdkProvider.Meta().(*apiClient)
 						role, err := client.client.Roles.Get(context.TODO(), id)
 						if err != nil {
 							return err
@@ -111,9 +111,9 @@ func TestAccCreateReadUpdateImportDeleteAclRole_ActiveActive(t *testing.T) {
 		fmt.Sprintf(testAADatabaseRole, testRoleName+"-updated")
 
 	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t) },
-		ProviderFactories: providerFactories,
-		CheckDestroy:      testAccCheckAclRoleDestroy,
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV5ProviderFactories: providerFactories,
+		CheckDestroy:             testAccCheckAclRoleDestroy,
 		Steps: []resource.TestStep{
 			// Test role creation including association with AA database
 			{
@@ -138,7 +138,7 @@ func TestAccCreateReadUpdateImportDeleteAclRole_ActiveActive(t *testing.T) {
 							return fmt.Errorf("couldn't parse the role ID: %s", redis.StringValue(&r.Primary.ID))
 						}
 
-						client := testProvider.Meta().(*apiClient)
+						client := sdkProvider.Meta().(*apiClient)
 						role, err := client.client.Roles.Get(context.TODO(), id)
 						if err != nil {
 							return err
@@ -215,7 +215,7 @@ resource "rediscloud_acl_role" "test" {
 `
 
 func testAccCheckAclRoleDestroy(s *terraform.State) error {
-	client := testProvider.Meta().(*apiClient)
+	client := sdkProvider.Meta().(*apiClient)
 
 	for _, r := range s.RootModule().Resources {
 		if r.Type != "rediscloud_acl_role" {
